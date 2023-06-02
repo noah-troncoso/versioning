@@ -15,7 +15,7 @@ defaults:
     working-directory: ./ 
 
 jobs:
-  publish:
+  version:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -24,4 +24,4 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3
       - name: Create Version
-        run: npm install npm run dagger update-version.mts
+        run: npm install && npm run dagger update-version.mts
