@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  GIT_USER: ${{ GITHUB_REPOSITORY_OWNER }} 
+  GIT_USER: ${{ vars.GITHUB_REPOSITORY_OWNER }} 
   # Could not for the life of me get auth working with the builtin GITHUB_TOKEN
   # This is a PAT setup in the action secrets in Github
   GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
