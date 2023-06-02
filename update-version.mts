@@ -42,6 +42,9 @@ connect(
 			.withExec(['npm', 'version', version, '--no-git-tag'])
 			.withExec(['git', 'config', 'user.email', 'github.actions@underarmour.com'])
 			.withExec(['git', 'config', 'user.name', 'GitHub Actions'])
+			// This needs to be removed so auth works correctly, however it doesn't exist when running
+			// locally, so we set it here so the --unset call doesn't fail
+			.withExec(['git', 'config', 'http.https://github.com/.extraheader', '1'])
 			.withExec(['git', 'config', '--unset', 'http.https://github.com/.extraheader'])
 			.withExec(['git', 'remote', 'set-url', 'origin', `https://${GIT_USER}:${GIT_TOKEN}@github.com/${GIT_REPO}.git`])
 			.withExec(['git', 'config', '-l'])
