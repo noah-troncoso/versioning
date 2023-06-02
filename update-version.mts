@@ -23,7 +23,17 @@ connect(
 		if (!GIT_REPO) throw new Error('GIT_REPO is not defined');
 		if (!GIT_MAIN_BRANCH) throw new Error('GIT_REMOTE_BRANCH is not defined');
 		if (!GIT_DEV_BRANCH) throw new Error('GIT_DEV_BRANCH is not defined');
-		
+
+		console.log('=================');
+		console.log('=================');
+		console.log('=================');
+		console.log('=================');
+		console.log('GITHUB TOKEN: ', GIT_TOKEN);
+		console.log('=================');
+		console.log('=================');
+		console.log('=================');
+		console.log('=================');
+		console.log('=================');
 		const source = client
 			.host()
 			.directory(resolve('./'), { include: [
