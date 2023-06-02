@@ -6,6 +6,7 @@ import { resolve } from 'path';
  * Note: seconds are hyphonated so that this still technically matches semver.
  * */
 
+// Create a version number using the current EST datetime in the format yyyy.mm.dd-ss
 function generateVersion() {
 	const date = new Date(new Date().toLocaleString('en-US', {timeZone: 'America/New_York'}));
 	const [year, month, day] = date.toISOString().split('T')[0].split('-');
@@ -47,7 +48,6 @@ connect(
 			.withExec(['git', 'config', 'http.https://github.com/.extraheader', '1'])
 			.withExec(['git', 'config', '--unset', 'http.https://github.com/.extraheader'])
 			.withExec(['git', 'remote', 'set-url', 'origin', `https://${GIT_TOKEN}@github.com/${GIT_REPO}.git`])
-			.withExec(['git', 'config', '-l'])
 			.withExec(['git', 'fetch', '--all'])
 			.withExec(['git', 'checkout', '-b', 'version-update'])
 			.withExec(['git', 'add', 'package.json', 'package-lock.json'])
@@ -56,9 +56,11 @@ connect(
 			.withExec(['git', 'checkout', GIT_MAIN_BRANCH])
 			.withExec(['git', 'merge', '--no-edit', 'version-update'])
 			.withExec(['git', 'push', '--atomic', 'origin', `${GIT_MAIN_BRANCH}`])
+			// Back merge to development branch
 			.withExec(['git', 'checkout', GIT_DEV_BRANCH])
 			.withExec(['git', 'merge', '--no-edit', '--allow-unrelated-histories', 'version-update'])
 			.withExec(['git', 'push', '--atomic', 'origin', `${GIT_DEV_BRANCH}`])
+			// Create and push tag
 			.withExec(['git', 'tag', version])
 			.withExec(['git', 'push', 'origin', version])
 			.exitCode();
