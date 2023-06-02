@@ -5,7 +5,8 @@ on:
 
 env:
   GIT_USER: noah-troncoso 
-  GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # Could not for the life of me get auth working with the builtin GITHUB_TOKEN
+  GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
   GIT_REPO: noah-troncoso/versioning
   GIT_MAIN_BRANCH: main
   GIT_DEV_BRANCH: development
