@@ -16,11 +16,13 @@ function generateVersion() {
 
 connect(
   	async (client: Client) => {
-		const { GIT_USER, GIT_TOKEN, GIT_REPO } = process.env;
+		const { GIT_USER, GIT_TOKEN, GIT_REPO, GIT_MAIN_BRANCH, GIT_DEV_BRANCH } = process.env;
 
 		if (!GIT_USER) throw new Error('GIT_USER is not defined');
 		if (!GIT_TOKEN) throw new Error('GIT_TOKEN is not defined');
 		if (!GIT_REPO) throw new Error('GIT_REPO is not defined');
+		if (!GIT_MAIN_BRANCH) throw new Error('GIT_REMOTE_BRANCH is not defined');
+		if (!GIT_DEV_BRANCH) throw new Error('GIT_DEV_BRANCH is not defined');
 		
 		const source = client
 			.host()
@@ -31,7 +33,7 @@ connect(
 			]});
 
 		const version = generateVersion();
-		const image = client.container().from('node:16-alpine');;
+		const image = client.container().from('node:16-alpine');
 		const result = await image 
 			.withMountedDirectory('/app', source)
 			.withWorkdir('/app')
@@ -41,12 +43,18 @@ connect(
 			.withExec(['git', 'config', 'user.email', 'github.actions@underarmour.com'])
 			.withExec(['git', 'config', 'user.name', 'GitHub Actions'])
 			.withExec(['git', 'remote', 'set-url', 'origin', `https://${GIT_TOKEN}@github.com/${GIT_USER}/${GIT_REPO}.git`])
+			.withExec(['git', 'branch', '-b', 'version-update'])
 			.withExec(['git', 'add', 'package.json', 'package-lock.json'])
 			// --no-verify skips pre-commit hooks
 			.withExec(['git', 'commit', '--no-verify', '-m', `Updating version to ${version} [skip ci]`])
+			.withExec(['git', 'checkout', GIT_MAIN_BRANCH])
+			.withExec(['git', 'merge', '--no-ff', '--no-edit', 'version-update'])
 			.withExec(['git', 'tag', version])
-			.withExec(['git', 'push', '--atomic', 'origin', 'HEAD:main'])
+			.withExec(['git', 'push', '--atomic', 'origin', `HEAD:${GIT_MAIN_BRANCH}`])
 			.withExec(['git', 'push', 'origin', version])
+			.withExec(['git', 'checkout', GIT_DEV_BRANCH])
+			.withExec(['git', 'merge', '--no-ff', '--no-edit', 'version-update'])
+			.withExec(['git', 'push', '--atomic', 'origin', `HEAD:${GIT_DEV_BRANCH}`])
 			.exitCode();
 
 		if (!result) {
