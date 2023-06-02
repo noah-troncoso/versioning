@@ -24,16 +24,6 @@ connect(
 		if (!GIT_MAIN_BRANCH) throw new Error('GIT_REMOTE_BRANCH is not defined');
 		if (!GIT_DEV_BRANCH) throw new Error('GIT_DEV_BRANCH is not defined');
 
-		console.log('=================');
-		console.log('=================');
-		console.log('=================');
-		console.log('=================');
-		console.log('GITHUB TOKEN: ', GIT_TOKEN);
-		console.log('=================');
-		console.log('=================');
-		console.log('=================');
-		console.log('=================');
-		console.log('=================');
 		const source = client
 			.host()
 			.directory(resolve('./'), { include: [
@@ -52,7 +42,7 @@ connect(
 			.withExec(['npm', 'version', version, '--no-git-tag'])
 			.withExec(['git', 'config', 'user.email', 'github.actions@underarmour.com'])
 			.withExec(['git', 'config', 'user.name', 'GitHub Actions'])
-			.withExec(['git', 'remote', 'set-url', 'origin', `https://${GIT_USER}:${GIT_TOKEN}@github.com/${GIT_USER}/${GIT_REPO}.git`])
+			.withExec(['git', 'remote', 'set-url', 'origin', `https://${GIT_USER}:${GIT_TOKEN}@github.com/${GIT_REPO}.git`])
 			.withExec(['git', 'checkout', '-b', 'version-update'])
 			.withExec(['git', 'add', 'package.json', 'package-lock.json'])
 			// --no-verify skips pre-commit hooks
