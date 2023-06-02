@@ -42,6 +42,7 @@ connect(
 			.withExec(['npm', 'version', version, '--no-git-tag'])
 			.withExec(['git', 'config', 'user.email', 'github.actions@underarmour.com'])
 			.withExec(['git', 'config', 'user.name', 'GitHub Actions'])
+			.withExec(['git', 'config', '--unset', 'http.https://github.com/.extraheader'])
 			.withExec(['git', 'remote', 'set-url', 'origin', `https://${GIT_USER}:${GIT_TOKEN}@github.com/${GIT_REPO}.git`])
 			.withExec(['git', 'config', '-l'])
 			.withExec(['git', 'checkout', '-b', 'version-update'])
