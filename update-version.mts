@@ -46,7 +46,7 @@ connect(
 			// locally, so we set it here so the --unset call doesn't fail
 			.withExec(['git', 'config', 'http.https://github.com/.extraheader', '1'])
 			.withExec(['git', 'config', '--unset', 'http.https://github.com/.extraheader'])
-			.withExec(['git', 'remote', 'set-url', 'origin', `https://${GIT_USER}:${GIT_TOKEN}@github.com/${GIT_REPO}.git`])
+			.withExec(['git', 'remote', 'set-url', 'origin', `https://${GIT_TOKEN}@github.com/${GIT_REPO}.git`])
 			.withExec(['git', 'config', '-l'])
 			.withExec(['git', 'checkout', '-b', 'version-update'])
 			.withExec(['git', 'add', 'package.json', 'package-lock.json'])
