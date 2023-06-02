@@ -56,25 +56,30 @@ connect(
 			]})
 			.withNewFile('.npmrc', generateNpmrc());
 
-		const node = client.container().from('node:16-alpine');
+		const node = client.container().from('node:16');
 
 		const version = generateVersion();
 
-		const runner = node
+		const result = await node
 			.withMountedDirectory('/app', source)
 			.withWorkdir('/app')
 			.withExec(['npm', 'version', version, '--no-git-tag'])
 			.withExec(['git', 'config', 'user.email', 'github.actions@underarmour.com'])
 			.withExec(['git', 'config', 'user.name', 'GitHub Actions'])
-			.withExec(['git', 'config', '--unset', 'http.https://github.com/.extraheader'])
-			.withExec(['git', 'remote', 'set-url', 'origin', `https://${GIT_USER}:${GIT_TOKEN}@github.com/ua-digital-commerce/ua-commerce-api.git`])
+			// .withExec(['git', 'config', '--unset', 'http.https://github.com/.extraheader'])
+			.withExec(['git', 'remote', 'set-url', 'origin', `https://github.com/noah-troncoso/versioning.git`])
 			.withExec(['git', 'add', 'package.json', 'package-lock.json'])
 			// --no-verify skips pre-commit hooks
 			.withExec(['git', 'commit', '--no-verify', '-m', `Updating version to ${version} [skip ci]`])
-			.withExec(['git', 'tag', version]);
+			.withExec(['git', 'tag', version])
+			.exitCode();
 			// .withExec(['git', 'push', '--atomic', 'origin', 'HEAD:main']);
 
-		console.log('Version updated to ', version);
+		if (!result) {
+			console.log('Version updated to ', version);
+		} else {
+			throw new Error('Failed to update version with exit code ' + result);
+		}
   	},
   	{ LogOutput: process.stdout },
 )
