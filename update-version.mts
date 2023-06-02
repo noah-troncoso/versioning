@@ -59,7 +59,7 @@ connect(
 			.withExec(['git', 'push', '--atomic', 'origin', `${GIT_MAIN_BRANCH}`])
 			.withExec(['git', 'push', 'origin', version])
 			.withExec(['git', 'checkout', GIT_DEV_BRANCH])
-			.withExec(['git', 'merge', '--no-ff', '--no-edit', 'version-update'])
+			.withExec(['git', 'merge', '--no-ff', '--no-edit', '--allow-unrelated-histories', 'version-update'])
 			.withExec(['git', 'push', '--atomic', 'origin', `${GIT_DEV_BRANCH}`])
 			.exitCode();
 
