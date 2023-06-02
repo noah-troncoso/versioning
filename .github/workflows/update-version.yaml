@@ -4,12 +4,12 @@ on:
   workflow_dispatch:
 
 env:
-  GIT_USER: noah-troncoso 
+  GIT_USER: ${{ GITHUB_REPOSITORY_OWNER }} 
   # Could not for the life of me get auth working with the builtin GITHUB_TOKEN
   # This is a PAT setup in the action secrets in Github
   GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
-  GIT_REPO: noah-troncoso/versioning
-  GIT_MAIN_BRANCH: main
+  GIT_REPO: ${{ vars.GITHUB_REPOSITORY }} 
+  GIT_MAIN_BRANCH: ${{ vars.GITHUB_REF_NAME }} 
   GIT_DEV_BRANCH: development
 
 defaults:
