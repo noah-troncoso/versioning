@@ -48,6 +48,7 @@ connect(
 			.withExec(['git', 'config', '--unset', 'http.https://github.com/.extraheader'])
 			.withExec(['git', 'remote', 'set-url', 'origin', `https://${GIT_TOKEN}@github.com/${GIT_REPO}.git`])
 			.withExec(['git', 'config', '-l'])
+			.withExec(['git', 'fetch', '--all'])
 			.withExec(['git', 'checkout', '-b', 'version-update'])
 			.withExec(['git', 'add', 'package.json', 'package-lock.json'])
 			// --no-verify skips pre-commit hooks
@@ -55,11 +56,11 @@ connect(
 			.withExec(['git', 'checkout', GIT_MAIN_BRANCH])
 			.withExec(['git', 'merge', '--no-ff', '--no-edit', 'version-update'])
 			.withExec(['git', 'tag', version])
-			.withExec(['git', 'push', '--atomic', 'origin', `HEAD:${GIT_MAIN_BRANCH}`])
+			.withExec(['git', 'push', '--atomic', 'origin', `${GIT_MAIN_BRANCH}`])
 			.withExec(['git', 'push', 'origin', version])
 			.withExec(['git', 'checkout', GIT_DEV_BRANCH])
 			.withExec(['git', 'merge', '--no-ff', '--no-edit', 'version-update'])
-			.withExec(['git', 'push', '--atomic', 'origin', `HEAD:${GIT_DEV_BRANCH}`])
+			.withExec(['git', 'push', '--atomic', 'origin', `${GIT_DEV_BRANCH}`])
 			.exitCode();
 
 		if (!result) {
