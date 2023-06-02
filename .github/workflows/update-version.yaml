@@ -5,7 +5,6 @@ on:
 
 env:
   GIT_USER: noah-troncoso
-  GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   GIT_REPO: versioning
   GIT_MAIN_BRANCH: main
   GIT_DEV_BRANCH: development
@@ -21,6 +20,8 @@ jobs:
     steps:
       - name: Checkout Project
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup Node
         uses: actions/setup-node@v3
       - name: Create Version
