@@ -43,7 +43,7 @@ connect(
 			.withExec(['git', 'config', 'user.email', 'github.actions@underarmour.com'])
 			.withExec(['git', 'config', 'user.name', 'GitHub Actions'])
 			.withExec(['git', 'remote', 'set-url', 'origin', `https://${GIT_TOKEN}@github.com/${GIT_USER}/${GIT_REPO}.git`])
-			.withExec(['git', 'branch', '-b', 'version-update'])
+			.withExec(['git', 'checkout', '-b', 'version-update'])
 			.withExec(['git', 'add', 'package.json', 'package-lock.json'])
 			// --no-verify skips pre-commit hooks
 			.withExec(['git', 'commit', '--no-verify', '-m', `Updating version to ${version} [skip ci]`])
