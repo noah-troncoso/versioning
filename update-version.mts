@@ -71,8 +71,8 @@ connect(
 			.withExec(['git', 'add', 'package.json', 'package-lock.json'])
 			// --no-verify skips pre-commit hooks
 			.withExec(['git', 'commit', '--no-verify', '-m', `Updating version to ${version} [skip ci]`])
-			.withExec(['git', 'tag', version])
-			.withExec(['git', 'push', '--atomic', 'origin', 'HEAD:main']);
+			.withExec(['git', 'tag', version]);
+			// .withExec(['git', 'push', '--atomic', 'origin', 'HEAD:main']);
 
 		console.log('Version updated to ', version);
   	},
