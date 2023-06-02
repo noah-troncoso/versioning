@@ -3,6 +3,15 @@ name: Update Version
 on:
   workflow_dispatch:
 
+env:
+  GIT_USER: ${{ github.repository_owner }} 
+  # Could not for the life of me get auth working with the builtin GITHUB_TOKEN
+  # This is a PAT setup in the action secrets in Github
+  GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
+  GIT_REPO: ${{ github.repository }} 
+  GIT_MAIN_BRANCH: ${{ github.ref_name }} 
+  GIT_DEV_BRANCH: development
+
 defaults:
   run:
     working-directory: ./ 
@@ -18,12 +27,4 @@ jobs:
         uses: actions/setup-node@v3
       - name: Create Version
         run: npm install && npm run dagger update-version.mts
-    env:
-      GIT_USER: ${{ GITHUB_REPOSITORY_OWNER }} 
-      # Could not for the life of me get auth working with the builtin GITHUB_TOKEN
-      # This is a PAT setup in the action secrets in Github
-      GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
-      GIT_REPO: ${{ GITHUB_REPOSITORY }} 
-      GIT_MAIN_BRANCH: ${{ GITHUB_REF_NAME }} 
-      GIT_DEV_BRANCH: development
 
