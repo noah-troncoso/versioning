@@ -10,9 +10,10 @@ import { resolve } from 'path';
 function generateVersion() {
 	const date = new Date(new Date().toLocaleString('en-US', {timeZone: 'America/New_York'}));
 	const [year, month, day] = date.toISOString().split('T')[0].split('-');
-	const midnight = new Date(Number(year), Number(month) - 1, Number(day));
+	const [ yearNum, monthNum, dayNum ] = [year, month, day].map((str) => Number(str));
+	const midnight = new Date(yearNum, monthNum - 1, dayNum);
 	const seconds = (date.getTime() - midnight.getTime()) / 1000;
-	return `${year}.${month}.${day}-${seconds}`;
+	return `${yearNum}.${monthNum}.${dayNum}-${seconds}`;
 }
 
 connect(
