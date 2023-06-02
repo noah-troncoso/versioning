@@ -55,12 +55,12 @@ connect(
 			.withExec(['git', 'commit', '--no-verify', '-m', `Updating version to ${version} [skip ci]`])
 			.withExec(['git', 'checkout', GIT_MAIN_BRANCH])
 			.withExec(['git', 'merge', '--no-edit', 'version-update'])
-			.withExec(['git', 'tag', version])
 			.withExec(['git', 'push', '--atomic', 'origin', `${GIT_MAIN_BRANCH}`])
-			.withExec(['git', 'push', 'origin', version])
 			.withExec(['git', 'checkout', GIT_DEV_BRANCH])
 			.withExec(['git', 'merge', '--no-edit', '--allow-unrelated-histories', 'version-update'])
 			.withExec(['git', 'push', '--atomic', 'origin', `${GIT_DEV_BRANCH}`])
+			.withExec(['git', 'tag', version])
+			.withExec(['git', 'push', 'origin', version])
 			.exitCode();
 
 		if (!result) {
