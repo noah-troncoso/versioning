@@ -1,0 +1,27 @@
+name: Update Version 
+
+on:
+  workflow_dispatch:
+
+env:
+  GIT_USER: noah-troncoso
+  GIT_TOKEN: $\{{ secrets.GITHUB_TOKEN }}
+  GIT_REPO: versioning
+  GIT_MAIN_BRANCH: main
+  GIT_DEV_BRANCH: development
+
+defaults:
+  run:
+    working-directory: ./ 
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
+      - name: Create Version
+        run: npm install npm run dagger update-version.mts
