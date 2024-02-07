@@ -36,8 +36,6 @@ jobs:
           app_id: 820653
           installation_id: 47041300
           private_key:  ${{ secrets.APP_PRIVATE_KEY }}
-          permissions: >-
-            {"checks": "write", "contents": "write", "actions": "write"}
       - name: Create Version
         run: npm install && npm run dagger update-version.mts
         env:
