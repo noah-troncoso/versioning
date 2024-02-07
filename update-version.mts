@@ -34,9 +34,10 @@ connect(
 				'.git',
 			]});
 
+		console.log(`Posting update to: https://${GIT_TOKEN}@github.com/${GIT_REPO}.git`);
 		const version = generateVersion();
 		const image = client.container().from('node:16-alpine');
-		const result = await image 
+		const result = await image
 			.withMountedDirectory('/app', source)
 			.withWorkdir('/app')
 			// Install git
@@ -74,4 +75,3 @@ connect(
   	},
   	{ LogOutput: process.stdout },
 )
-
