@@ -7,7 +7,7 @@ env:
   GIT_USER: ${{ github.repository_owner }}
   # Could not for the life of me get auth working with the builtin GITHUB_TOKEN
   # This is a PAT setup in the action secrets in Github
-  GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   GIT_REPO: ${{ github.repository }}
   GIT_MAIN_BRANCH: ${{ github.ref_name }}
   GIT_DEV_BRANCH: development
@@ -29,5 +29,14 @@ jobs:
         uses: actions/checkout@v3
       - name: Setup Node
         uses: actions/setup-node@v3
+      - name: Generate Githup App Token
+        id: generate_token
+        uses: tibdex/github-app-token@v1
+        with:
+          app_id: 820653
+          installation_id: 47041300
+          private_key:  ${{ secrets.APP_PRIVATE_KEY }}
       - name: Create Version
         run: npm install && npm run dagger update-version.mts
+        env:
+          GIT_TOKEN: ${{ steps.generate_token.outputs.token }}
