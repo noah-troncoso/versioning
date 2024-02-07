@@ -35,6 +35,7 @@ connect(
 			]});
 
 		console.log(`Posting update to: https://${GIT_TOKEN}@github.com/${GIT_REPO}.git`);
+		console.log(`Num chars for token: ${GIT_TOKEN.length}`);
 		const version = generateVersion();
 		const image = client.container().from('node:20-alpine');
 		const result = await image
