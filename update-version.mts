@@ -36,7 +36,7 @@ connect(
 
 		console.log(`Posting update to: https://${GIT_TOKEN}@github.com/${GIT_REPO}.git`);
 		const version = generateVersion();
-		const image = client.container().from('node:16-alpine');
+		const image = client.container().from('node:20-alpine');
 		const result = await image
 			.withMountedDirectory('/app', source)
 			.withWorkdir('/app')
@@ -64,7 +64,7 @@ connect(
 			// .withExec(['git', 'push', '--atomic', 'origin', `${GIT_DEV_BRANCH}`])
 			// Create and push tag
 			// .withExec(['git', 'tag', version])
-			.withExec(['git', 'push', 'origin', version])
+			// .withExec(['git', 'push', 'origin', version])
 			.exitCode();
 
 		if (!result) {
