@@ -34,7 +34,8 @@ connect(
 				'.git',
 			]});
 
-		console.log(`Posting update to: https://${GIT_TOKEN}@github.com/${GIT_REPO}.git`);
+
+		console.log(`Posting update to: https://oauth2:${GIT_TOKEN}@github.com/${GIT_REPO}.git`);
 		console.log(`Num chars for token: ${GIT_TOKEN.length}`);
 		const version = generateVersion();
 		const image = client.container().from('node:20-alpine');
@@ -50,7 +51,7 @@ connect(
 			// locally, so we set it here so the --unset call doesn't fail
 			.withExec(['git', 'config', 'http.https://github.com/.extraheader', '1'])
 			.withExec(['git', 'config', '--unset', 'http.https://github.com/.extraheader'])
-			.withExec(['git', 'remote', 'set-url', 'origin', `https://${GIT_TOKEN}@github.com/${GIT_REPO}.git`])
+			.withExec(['git', 'remote', 'set-url', 'origin', `https://oauth2:${GIT_TOKEN}@github.com/${GIT_REPO}.git`])
 			.withExec(['git', 'fetch', '--all'])
 			// .withExec(['git', 'checkout', '-b', 'version-update'])
 			.withExec(['git', 'add', 'package.json', 'package-lock.json'])
