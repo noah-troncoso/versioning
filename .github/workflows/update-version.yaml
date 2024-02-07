@@ -21,8 +21,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
-      contents: write # write needed to create release in github
-      pull-requests: write # needed for backmerge PR step
+      contents: write
+      actions: write
     timeout-minutes: 5
     steps:
       - name: Checkout Project
